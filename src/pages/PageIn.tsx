@@ -2,6 +2,8 @@ import * as React from 'react';
 // import RowInput from './RowInput';
 import PageCao from './Page1';
 import { isNum, maxLength, minLength } from './validate';
+import SimpleModal from './SimpleModal';
+
 let obj = [
   {
     name: 'a',
@@ -43,6 +45,9 @@ class PageIn extends React.Component<any, any> {
       <div>
         <CaoPage />
         <div onClick={this.submitForm}>submit</div>
+        <SimpleModal 
+          isShown={true}
+        />
       </div>
     );
   }
