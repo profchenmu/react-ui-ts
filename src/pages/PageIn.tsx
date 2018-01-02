@@ -20,7 +20,25 @@ let obj = [
     validate: [isNum, minLength],
     errorMsg: ['fk1', 'fk2'],
     resErrorMsg:''
-  }
+  },
+  {
+    name: 'c',
+    type: 'select',
+    data: [
+      {
+        key: '0', 
+        value: 'AA'
+      },
+      {
+        key: '1', 
+        value: 'BB'
+      }
+    ],
+    defaultKey: '1',
+    validate: [isNum, minLength],
+    errorMsg: ['cf1', 'cf2'],
+    resErrorMsg:''
+  },
 ];
 class PageIn extends React.Component<any, any> {
   constructor(props: object) {
@@ -40,6 +58,7 @@ class PageIn extends React.Component<any, any> {
   componentDidMount() {
   }
   submitForm() {
+    console.log(obj)
     let resErrorMsg: string = ''
     for(let i of obj) {
       if(i.resErrorMsg) {

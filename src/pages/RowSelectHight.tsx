@@ -1,19 +1,25 @@
 import * as React from 'react';
 // import RowInput from './RowInput';
-export default function logProps(WAPC: any, obj: {isValid: boolean, data: string, errorMsg: Array<string>, resErrorMsg: string}) {
+export default function logProps(WAPC: any, obj: {
+  isValid: boolean, 
+  data: string, 
+  errorMsg: Array<string>, 
+  resErrorMsg: string,
+  defaultValue: string
+}) {
 
   return class extends React.Component<any, any> {
     constructor(props: object) {
       super(props);
-      // this.state = this.props;
+      this.state = this.props;
       this.validate = this.validate.bind(this);
       this.setValue = this.setValue.bind(this);
-      this.state = {
-        isValid: false
-      }
     }
     componentDidMount() {
-      this.validate(this.props.data);
+      this.validate(this.state.data);
+    }
+    componentWillReceiveProps(props: object) {
+      // this.setState(props);
     }
     // componentWillUnmount() {
     // }
@@ -41,7 +47,7 @@ export default function logProps(WAPC: any, obj: {isValid: boolean, data: string
       });
     }
     setValue(value: string):void {
-      obj.data = value;
+      obj.defaultValue = value;
     }
     handleChange() {
       this.setState({
@@ -49,12 +55,14 @@ export default function logProps(WAPC: any, obj: {isValid: boolean, data: string
     }
 
     render() {
+      console.log(this.state)
       return (
         <WAPC
-          data={this.props.data}
+          data={this.state.data}
           validate={this.validate}
           setValue={this.setValue}
           isValid={this.state.isValid}
+          defaultKey={this.state.defaultKey}
         />
       );
     }
