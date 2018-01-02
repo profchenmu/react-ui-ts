@@ -1,5 +1,4 @@
 import * as React from 'react';
-const Fragment = React.Fragment;
 class SimpleModal extends React.Component<any, any> {
   constructor(props: object){
     super(props);
@@ -11,6 +10,9 @@ class SimpleModal extends React.Component<any, any> {
   }
   componentDidMount() {
   }
+  componentWillReceiveProps(props: object) {
+    this.setState(props)
+  }
   hideModal() {
     this.setState({
       isShown: false
@@ -18,20 +20,17 @@ class SimpleModal extends React.Component<any, any> {
   }
 	render() {
     const className: string = `simple-modal ${this.state || ''}`;
-    return(
-      <Fragment>
-        { this.state.isShown ? 
-          (
-            <div 
-              className={className}
-              onClick={this.hideModal}
-            >
-              123456
-            </div>
-          ) : null
-        }
-      </Fragment>
-    );
+    return (
+      this.state.isShown ? 
+        (
+          <div 
+            className={className}
+            onClick={this.hideModal}
+          >
+            {this.state.msg||''}
+          </div>
+        ) : null
+      )
 	}
 }
 export default SimpleModal;

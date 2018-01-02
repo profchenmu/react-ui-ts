@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import RowInput from './RowInput';
-export default function logProps(WAPC: any, obj: {isValid: boolean, data: string}) {
+export default function logProps(WAPC: any, obj: {isValid: boolean, data: string, errorMsg: Array<string>, resErrorMsg: string}) {
 
   return class extends React.Component<any, any> {
     constructor(props: object) {
@@ -24,11 +24,15 @@ export default function logProps(WAPC: any, obj: {isValid: boolean, data: string
         for (let i of validateFun) {
           if (!i(value)) {
             isValid = i(value);
+            obj.resErrorMsg = obj.errorMsg[validateFun.indexOf(i)];
             break;
           } else {
             isValid = i(value);
           }
         }
+      }
+      if(isValid){
+        obj.resErrorMsg = '';
       }
       this.setState({isValid: isValid}, () => {
         /* valid infomation goes up */

@@ -10,21 +10,24 @@ let obj = [
     type: 'input',
     data: '123',
     validate: [isNum, maxLength],
-    errorMsg: 'cao'
+    errorMsg: ['cao1', 'cao2'],
+    resErrorMsg:''
   },
   {
     name: 'b',
     type: 'input',
     data: '345',
     validate: [isNum, minLength],
-    errorMsg: 'fk'
+    errorMsg: ['fk1', 'fk2'],
+    resErrorMsg:''
   }
 ];
 class PageIn extends React.Component<any, any> {
   constructor(props: object) {
     super(props);
     this.state = {
-      CaoPage: PageCao(obj)
+      CaoPage: PageCao(obj),
+      isShown: false
     };
     this.getValue = this.getValue.bind(this);
     this.getValidate = this.getValidate.bind(this);
@@ -37,7 +40,11 @@ class PageIn extends React.Component<any, any> {
   componentDidMount() {
   }
   submitForm() {
-    console.log(obj)
+    let resErrorMsg: string = obj[1].resErrorMsg
+    this.setState({
+      isShown: true,
+      resErrorMsg: resErrorMsg
+    })
   }
   render() {
     const CaoPage: any = this.state.CaoPage;
@@ -46,7 +53,8 @@ class PageIn extends React.Component<any, any> {
         <CaoPage />
         <div onClick={this.submitForm}>submit</div>
         <SimpleModal 
-          isShown={true}
+          isShown={this.state.isShown}
+          msg={this.state.resErrorMsg}
         />
       </div>
     );

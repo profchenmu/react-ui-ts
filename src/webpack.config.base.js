@@ -37,7 +37,6 @@ module.exports = {
                   sourceMap: true
               }
             }
-          
           ]
         })
       },
@@ -60,7 +59,7 @@ module.exports = {
     // new webpack.NoErrorsPlugin(),
   ],
   resolve: {
-    extensions: ['.js', 'ts', '.tsx', '.scss', 'html']
+    extensions: ['ts', '.tsx', '.scss', 'html']
   }
 
 };
