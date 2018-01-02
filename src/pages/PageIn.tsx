@@ -40,7 +40,13 @@ class PageIn extends React.Component<any, any> {
   componentDidMount() {
   }
   submitForm() {
-    let resErrorMsg: string = obj[1].resErrorMsg
+    let resErrorMsg: string = ''
+    for(let i of obj) {
+      if(i.resErrorMsg) {
+        resErrorMsg = i.resErrorMsg;
+        break;
+      }
+    }
     this.setState({
       isShown: true,
       resErrorMsg: resErrorMsg
