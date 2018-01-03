@@ -6,6 +6,9 @@ import RowSelect from './RowSelect';
 import RIHProps from './RowInputHight';
 import RSHProps from './RowSelectHight';
 
+import RowDateSelect from './RowDateSelect';
+import RDSHProps from './RowDateSelectHight';
+
 export default function PageCao(obj: object) {
   function getValues(isValid: boolean):void {
     console.log(isValid)
@@ -57,11 +60,24 @@ export default function PageCao(obj: object) {
                       />
                     </div>
                   );
-              default:
-                return(
-                  <div>coacaocaocao</div>
-                )
-              }
+                case 'dateSelect':
+                  const RDSH = RDSHProps(RowDateSelect, e);
+                  return(
+                    <div key={i}>
+                      <RDSH
+                        data={e.data} 
+                        validate={e.validate}
+                        name={e.name}
+                        defaultKey={e.defaultKey}
+                        getValidate={this.getValidate}
+                      />
+                    </div>
+                  );
+                default:
+                  return(
+                    <div>coacaocaocao</div>
+                  )
+                }
             })
           }
         </div>

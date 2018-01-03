@@ -39,6 +39,19 @@ let obj = [
     errorMsg: ['cf1', 'cf2'],
     resErrorMsg:''
   },
+  {
+    name: 'd',
+    type: 'dateSelect',
+    data: {
+      start: '2008-1-9',
+      end: '3000-12-31',
+      devideWith: '-'
+    },
+    defaultKey: '1900-12-12',
+    validate: [],
+    errorMsg: ['df1', 'df2'],
+    resErrorMsg:''
+  }
 ];
 class PageIn extends React.Component<any, any> {
   constructor(props: object) {

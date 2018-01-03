@@ -1,0 +1,7 @@
+.date-item{
+	display: inline-block;
+	height: 100px;
+	overflow: scroll;
+	width: 100px;
+	text-align: center;
+}
