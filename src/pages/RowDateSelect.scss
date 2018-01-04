@@ -1,0 +1,16 @@
+.row-date-select{
+	user-select: none;
+	.out-items{
+		height: 100px;
+		overflow: hidden;
+		display: inline-block;
+		-webkit-overflow-scrolling: touch;
+	}
+	.date-item{
+		height: 20px;
+		line-height: 20px;
+		width: 100px;
+		text-align: center;
+
+	}
+}
