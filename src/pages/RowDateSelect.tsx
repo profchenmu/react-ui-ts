@@ -11,7 +11,9 @@ class RowInput extends React.Component<any, any> {
       name: this.props.name,
       yearArr: [],
       monArr: [],
-      dayArr: []
+      dayArr: [],
+      moveStyle: 0,
+      needTransition: false
     };
     this.change = this.change.bind(this);
     this.blur = this.blur.bind(this);
@@ -57,11 +59,19 @@ class RowInput extends React.Component<any, any> {
     // }
   }
   yearTouchMove(e:any) {
-    console.log(e.touches[0], e.timeStamp.valueOf())
+    e.preventDefault();
+    let parentEl:any = this.refs.yearItems;
+    let height = 0 - e.currentTarget.clientHeight + parentEl.clientHeight - 50;
+    console.dir(height)
+    let pos:number = e.touches[0].clientY;
+    let movePos = pos - this.startPos;
+    // if(movePos<=50 && movePos>=height){
+      this.setState({moveStyle: movePos})
+    // }
   }
   yearTouchStart(e:any) {
     this.timeStart = e.timeStamp;
-    this.startPos = e.touches[0].clientY;
+    this.startPos = e.touches[0].clientY - this.state.moveStyle;
   }
   yearTouchEnd(e:any) {
     this.timeEnd = e.timeStamp;
@@ -70,14 +80,41 @@ class RowInput extends React.Component<any, any> {
     this.endPos = e.changedTouches[0].clientY;
     this.movePos = Math.abs(this.endPos - this.startPos);
     let speed:number = this.movePos/this.timeMove;
-    console.log(speed);
+    // let isUp = this.endPos - this.startPos > 0;
+    this.speedDown(speed, this.endPos - this.startPos);
+    this.jumpBack(e);
+  }
+  speedDown(speed: number, isUp: number) {
+    if(speed!==0) {
+      let _speed = speed*10000;
+      if(isUp>0){
+        let moveStyle = this.state.moveStyle+_speed;
+        console.log(moveStyle)
+        this.setState({
+          moveStyle: moveStyle,
+          needTransition: true
+        })
+      }
+    }
+  }
+  jumpBack(e:any) {
+    let parentEl:any = this.refs.yearItems;
+    let height = 0 - e.currentTarget.clientHeight + parentEl.clientHeight;
+    this.state.moveStyle > 0 && this.setState({moveStyle: 0, needTransition: true});
+    this.state.moveStyle < height && this.setState({moveStyle: height, needTransition: true});
   }
   render() {
     const {
       // placeholder,
       // value,
-      yearArr, monArr, dayArr
+      yearArr, monArr, dayArr, needTransition
     } = this.state;
+    let transition:string = needTransition ? 'transition: all 10s ease-in' : '';
+    let cao = {
+      transform: `translate3d(0, ${this.state.moveStyle}px, 0)`,
+      Transition: 'transition: all 1s ease-in'
+    }
+    console.log(transition)
     return (
       <div className="row-date-select">
         <div>
@@ -86,6 +123,7 @@ class RowInput extends React.Component<any, any> {
             <div className="out-items" ref="yearItems">
               <div 
                 className="date-item year-item"
+                style={cao}
                 onTouchStart={this.yearTouchStart.bind(this)}
                 onTouchEnd={this.yearTouchEnd.bind(this)}
                 onTouchMove={this.yearTouchMove.bind(this)}
@@ -93,7 +131,7 @@ class RowInput extends React.Component<any, any> {
                 {
                   yearArr.map((e:any,i:number) => {
                     return (
-                      <div key={i}>
+                      <div className="select-item" key={i}>
                         {e}
                       </div>
                     )

@@ -59,8 +59,6 @@ let initDateFormat = (start: string, end: string) => {
     }
     componentDidMount() {
       this.validate(this.state.data);
-      
-
     }
     componentWillReceiveProps(props: object) {
       // this.setState(props);

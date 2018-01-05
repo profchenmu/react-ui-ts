@@ -7,8 +7,10 @@
 		-webkit-overflow-scrolling: touch;
 	}
 	.date-item{
-		height: 20px;
-		line-height: 20px;
+		.select-item{
+			height: 20px;
+			line-height: 20px;
+		}
 		width: 100px;
 		text-align: center;
 
