@@ -1,18 +1,14 @@
 import * as React from 'react';
 import './RowDateSelect.scss';
 // import PropTypes from 'prop-types';
-import ChainSelect from './ChainSelect';
 
 class RowInput extends React.Component<any, any> {
   constructor(props: object) {
     super(props);
     this.state = {
-      data: this.props.data,
       defaultKey: this.props.defaultKey,
       name: this.props.name,
       yearArr: [],
-      monArr: [],
-      dayArr: [],
       moveStyle: 0,
       needTransition: true
     };
@@ -111,7 +107,7 @@ class RowInput extends React.Component<any, any> {
       //   moveStyle -= absMoveStyle;
       // }
       let yearValue = Math.abs(moveStyle/20);
-      this.props.chanYears(self.state.yearArr[yearValue]);
+      this.props.callback(self.state.yearArr[yearValue]);
       self.setState({
         moveStyle: moveStyle
       });
@@ -133,14 +129,9 @@ class RowInput extends React.Component<any, any> {
       cao.style.transition = '';
     }
   }
-  callback(value: number) {
-    console.log(value);
-  }
   render() {
     const {
-      // placeholder,
-      // value,
-      yearArr, monArr, dayArr
+      yearArr
     } = this.state;
     let cao = {
       transform: `translate3d(0, ${this.state.moveStyle}px, 0)`
@@ -150,7 +141,6 @@ class RowInput extends React.Component<any, any> {
         <div>
         <p>{`${this.props.isValid}`}</p>
           <div>
-            <ChainSelect yearArr={yearArr} callback={this.callback}/>
             <div className="out-items" ref="yearItems">
               <div 
                 className="date-item year-item"
@@ -164,32 +154,6 @@ class RowInput extends React.Component<any, any> {
                   yearArr.map((e:any,i:number) => {
                     return (
                       <div className="select-item" key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
-            <div className="out-items">
-              <div className="date-item mon-item">
-                {
-                  monArr.map((e:any,i:number) => {
-                    return (
-                      <div key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
-            <div className="out-items">
-              <div className="date-item day-item">
-                {
-                  dayArr.map((e:any,i:number) => {
-                    return (
-                      <div key={i}>
                         {e}
                       </div>
                     )

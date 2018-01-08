@@ -5,7 +5,8 @@ export default function logProps(WAPC: any, obj: {
   data: any, 
   errorMsg: Array<string>, 
   resErrorMsg: string,
-  defaultValue: string
+  defaultValue: string,
+  defaultKey: string
 }) {
 let initDateFormat = (start: string, end: string) => {
   let startArr = start.split('-'), endArr = end.split('-');
@@ -56,6 +57,7 @@ let initDateFormat = (start: string, end: string) => {
       };
       this.validate = this.validate.bind(this);
       this.setValue = this.setValue.bind(this);
+      this.changeYears = this.changeYears.bind(this);
     }
     componentDidMount() {
       this.validate(this.state.data);
@@ -65,6 +67,10 @@ let initDateFormat = (start: string, end: string) => {
     }
     // componentWillUnmount() {
     // }
+
+    changeYears(year:any) {
+      console.log(year);
+    }
     validate(value: string):void {
       const validateFun = this.props.validate;
       let isValid = true;
@@ -85,8 +91,8 @@ let initDateFormat = (start: string, end: string) => {
       const data = obj.data;
       const { start, end } = data;
       const dateObj = initDateFormat(start, end);
-      console.log(dateObj);
-      this.setState({isValid: isValid, dateObj: dateObj}, () => {
+      const defaultKey = obj.defaultKey;
+      this.setState({isValid: isValid, dateObj: dateObj, defaultKey: defaultKey}, () => {
         /* valid infomation goes up */
         obj.isValid = isValid;
         // this.props.getValidate(isValid);
@@ -113,6 +119,7 @@ let initDateFormat = (start: string, end: string) => {
           setValue={this.setValue}
           isValid={this.state.isValid}
           defaultKey={this.state.defaultKey}
+          chanYears={this.changeYears}
         />
       );
     }
