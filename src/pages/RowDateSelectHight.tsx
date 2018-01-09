@@ -43,7 +43,7 @@ let initDateFormat = (start: string, end: string) => {
       return forMatDate(1, 30);
     }
   }
-  const yearArr = forMatDate(startYear, startYear + 99);
+  const yearArr = forMatDate(startYear, startYear + 30);
   const monArr = [1,2,3,4,5,6,7,8,9,11,12];
   const dayArr = getDate(startYear, startMon);
   return {yearArr: yearArr, monArr: monArr, dayArr: dayArr};

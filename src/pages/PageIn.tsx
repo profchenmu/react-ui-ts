@@ -43,11 +43,11 @@ let obj = [
     name: 'd',
     type: 'dateSelect',
     data: {
-      start: '2008-1-9',
+      start: '1980-1-1',
       end: '3000-12-31',
       devideWith: '-'
     },
-    defaultKey: '1900-12-12',
+    defaultKey: '1983-3-9',
     validate: [],
     errorMsg: ['df1', 'df2'],
     resErrorMsg:''

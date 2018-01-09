@@ -125,78 +125,70 @@ class RowInput extends React.Component<any, any> {
     this.state.moveStyle < height && this.setState({moveStyle: height, needTransition: true});
   }
   componentWillUpdate(props:any,state:any) {
-    let cao:any = this.refs.cao;
-    if(state.needTransition) {
-      console.dir(cao);
-      cao.style.transition = 'all .4s ease-out';
-    }else{
-      cao.style.transition = '';
-    }
   }
-  callback(value: number) {
+  callback(valueObj: any) {
+    let defaultKey = this.state.defaultKey;
+    let _tempArr = defaultKey.split('-');
+    let defaultYear = parseInt(_tempArr[0]);
+    let defaultMon = parseInt(_tempArr[1]);
+    let defaultDay = parseInt(_tempArr[2]);
+    switch (valueObj.name) {
+      case 'year':
+        defaultYear = valueObj.value;
+        break;
+      case 'mon':
+        defaultMon = valueObj.value;
+        break;
+      case 'day':
+        defaultDay = valueObj.value;
+        break;
+    }
+    let dayArr = [];
+    for(let i=1; i<32; i++){
+      dayArr.push(i);
+    }
+    if(defaultMon == 2) {
+      if(defaultYear%4!==0||defaultYear%10==0) {
+        dayArr.splice(dayArr.indexOf(29));
+        defaultDay > 28 && (defaultDay = 28);
+      }else{
+        dayArr.splice(dayArr.indexOf(30));
+        defaultDay > 29 && (defaultDay = 29);
+      }
+    } else {
+      if([1,3,5,7,8,10,12].indexOf(defaultMon)<0) {
+        dayArr.splice(dayArr.indexOf(31));
+        defaultDay > 30 && (defaultDay = 30);
+      }
+    }
+    defaultKey = `${defaultYear}-${defaultMon}-${defaultDay}`;
+    const _obj:any = {defaultKey: defaultKey}
+    this.state.dayArr.length !== dayArr.length && (_obj.dayArr = dayArr);
+    this.setState(_obj);
+  }
+  setMon(value: object) {
     console.log(value);
   }
   render() {
     const {
       // placeholder,
       // value,
-      yearArr, monArr, dayArr
+      yearArr, monArr, dayArr, defaultKey
     } = this.state;
-    let cao = {
-      transform: `translate3d(0, ${this.state.moveStyle}px, 0)`
-    }
+    let _tempArr = defaultKey.split('-');
+    let defaultYear = _tempArr[0];
+    let defaultMon = _tempArr[1];
+    let defaultDay = _tempArr[2];
     return (
       <div className="row-date-select">
+      <p>{defaultKey}</p>
         <div>
         <p>{`${this.props.isValid}`}</p>
-          <div>
-            <ChainSelect yearArr={yearArr} callback={this.callback}/>
-            <div className="out-items" ref="yearItems">
-              <div 
-                className="date-item year-item"
-                ref="cao"
-                style={cao}
-                onTouchStart={this.yearTouchStart.bind(this)}
-                onTouchEnd={this.yearTouchEnd.bind(this)}
-                onTouchMove={this.yearTouchMove.bind(this)}
-              >
-                {
-                  yearArr.map((e:any,i:number) => {
-                    return (
-                      <div className="select-item" key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
-            <div className="out-items">
-              <div className="date-item mon-item">
-                {
-                  monArr.map((e:any,i:number) => {
-                    return (
-                      <div key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
-            <div className="out-items">
-              <div className="date-item day-item">
-                {
-                  dayArr.map((e:any,i:number) => {
-                    return (
-                      <div key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
+          <div className="selects-holder">
+            <div className="line-mark"></div>
+            <ChainSelect name='year' yearArr={yearArr} callback={this.callback.bind(this)} defaultYear={defaultYear} />
+            <ChainSelect name='mon' yearArr={monArr} callback={this.callback.bind(this)} defaultYear={defaultMon} />
+            <ChainSelect name='day' yearArr={dayArr} callback={this.callback.bind(this)} defaultYear={defaultDay} />
           </div>
         </div>
       </div>

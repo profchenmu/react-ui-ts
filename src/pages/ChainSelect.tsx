@@ -10,7 +10,8 @@ class RowInput extends React.Component<any, any> {
       name: this.props.name,
       yearArr: [],
       moveStyle: 0,
-      needTransition: true
+      needTransition: true,
+      defaultYear: this.props.defaultYear
     };
     this.change = this.change.bind(this);
     this.blur = this.blur.bind(this);
@@ -21,13 +22,24 @@ class RowInput extends React.Component<any, any> {
   startPos: number
   endPos: number
   movePos: number
-  componentWillReceiveProps(props: object) {
-    this.setState(props);
+  timeout: any
+  componentWillReceiveProps(props:any) {
+    let defaultYear = props.defaultYear;
+    defaultYear = parseInt(defaultYear);
+    let index:number = props.yearArr.indexOf(defaultYear);
+    let moveStyle = 0-index*20;
+    this.setState({
+      ...props,
+      moveStyle: moveStyle
+    });
   }
   componentDidMount() {
+
   }
 
   componentDidUpdate() {
+    
+    // let moveStyle:number = Math.round(this.state.moveStyle/20)*20;
     // console.dir(this.refs.yearItems);
     // let caoItem:any = this.refs.yearItems;
     // let self: any = this;
@@ -66,6 +78,7 @@ class RowInput extends React.Component<any, any> {
   }
   yearTouchStart(e:any) {
     // this.timeStart = e.timeStamp;
+    clearTimeout(this.timeout);
     this.startPos = e.touches[0].clientY - this.state.moveStyle;
     this.setState({
       needTransition: true
@@ -73,20 +86,18 @@ class RowInput extends React.Component<any, any> {
   }
   yearTouchEnd(e:any) {
     this.timeEnd = e.timeStamp;
-    console.log(e)
     this.timeMove = this.timeEnd - this.timeStart;
     this.endPos = e.changedTouches[0].clientY;
     this.movePos = Math.abs(this.endPos - this.startPos);
     let speed:number = this.movePos/this.timeMove;
     this.speedDown(speed, this.endPos - this.startPos, e);
-    
   }
   speedDown(speed: number, isUp: number, e: any) {
     if(speed!==0) {
       let _speed = speed;
       if(isUp<0){
         let moveStyle = this.state.moveStyle-_speed;
-        console.log(moveStyle)
+        console.log(moveStyle);
         this.setState({
           moveStyle: moveStyle,
           needTransition: true
@@ -96,34 +107,33 @@ class RowInput extends React.Component<any, any> {
     this.stop();
     this.jumpBack(e);
   }
+  cao() {
+    let moveStyle:number = Math.round(this.state.moveStyle/20)*20;
+    // let absMoveStyle:number = Math.abs(moveStyle % 20);
+    // if( absMoveStyle > 10) {
+    //   moveStyle += absMoveStyle;
+    // } else {
+    //   moveStyle -= absMoveStyle;
+    // }
+    let yearValue = Math.abs(moveStyle/20);
+    this.props.callback({name: this.props.name, value: this.state.yearArr[yearValue]});
+    this.setState({
+      moveStyle: moveStyle
+    });
+  }
   stop() {
     let self = this;
-    setTimeout(() => {
-      let moveStyle:number = Math.round(self.state.moveStyle/20)*20;
-      // let absMoveStyle:number = Math.abs(moveStyle % 20);
-      // if( absMoveStyle > 10) {
-      //   moveStyle += absMoveStyle;
-      // } else {
-      //   moveStyle -= absMoveStyle;
-      // }
-      let yearValue = Math.abs(moveStyle/20);
-      this.props.callback(self.state.yearArr[yearValue]);
-      self.setState({
-        moveStyle: moveStyle
-      });
-    }, 500);
+    this.timeout = setTimeout(self.cao.bind(self), 500);
   }
-
   jumpBack(e:any) {
-    let parentEl:any = this.refs.yearItems;
-    let height = 0 - e.currentTarget.clientHeight + parentEl.clientHeight;
+    // let parentEl:any = this.refs.yearItems;
+    let height = 0 - e.currentTarget.clientHeight + 20;
     this.state.moveStyle > 0 && this.setState({moveStyle: 0, needTransition: true});
     this.state.moveStyle < height && this.setState({moveStyle: height, needTransition: true});
   }
   componentWillUpdate(props:any,state:any) {
     let cao:any = this.refs.cao;
     if(state.needTransition) {
-      console.dir(cao);
       cao.style.transition = 'all .4s ease-out';
     }else{
       cao.style.transition = '';
@@ -137,33 +147,26 @@ class RowInput extends React.Component<any, any> {
       transform: `translate3d(0, ${this.state.moveStyle}px, 0)`
     }
     return (
-      <div className="row-date-select">
-        <div>
-        <p>{`${this.props.isValid}`}</p>
-          <div>
-            <div className="out-items" ref="yearItems">
-              <div 
-                className="date-item year-item"
-                ref="cao"
-                style={cao}
-                onTouchStart={this.yearTouchStart.bind(this)}
-                onTouchEnd={this.yearTouchEnd.bind(this)}
-                onTouchMove={this.yearTouchMove.bind(this)}
-              >
-                {
-                  yearArr.map((e:any,i:number) => {
-                    return (
-                      <div className="select-item" key={i}>
-                        {e}
-                      </div>
-                    )
-                  })
-                }
-              </div>
+          <div className="out-items" ref="yearItems">
+            <div 
+              className="date-item year-item"
+              ref="cao"
+              style={cao}
+              onTouchStart={this.yearTouchStart.bind(this)}
+              onTouchEnd={this.yearTouchEnd.bind(this)}
+              onTouchMove={this.yearTouchMove.bind(this)}
+            >
+              {
+                yearArr.map((e:any,i:number) => {
+                  return (
+                    <div className="select-item" key={i}>
+                      {e}
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
-        </div>
-      </div>
     );
   }
   blur(e: any) {
