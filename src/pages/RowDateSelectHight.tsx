@@ -6,16 +6,20 @@ export default function logProps(WAPC: any, obj: {
   errorMsg: Array<string>, 
   resErrorMsg: string,
   defaultValue: string,
-  defaultKey: string
+  defaultKey: string,
+  format: string,
+  unit: string
 }) {
-let initDateFormat = (start: string, end: string) => {
+let initDateFormat = (start: string, end: string, format: string) => {
   let startArr = start.split('-'), endArr = end.split('-');
-  let startYear = parseInt(startArr[0]),
-      startMon = parseInt(startArr[1]),
-      startDay = parseInt(startArr[2]);
-  let endYear = parseInt(endArr[0]),
-      endMon = parseInt(endArr[1]),
-      endDay = parseInt(endArr[2]);
+  let formatArr = format.split('-');
+  let startYear = parseInt(startArr[formatArr.indexOf('yyyy')]),
+      startMon = parseInt(startArr[formatArr.indexOf('mm')]),
+      startDay = parseInt(startArr[formatArr.indexOf('dd')]);
+  let endYear = parseInt(endArr[formatArr.indexOf('yyyy')]),
+      endMon = parseInt(endArr[formatArr.indexOf('mm')]),
+      endDay = parseInt(endArr[formatArr.indexOf('dd')]);
+
   console.log(startYear, startMon, startDay);
   console.log(endYear, endMon, endDay);
 
@@ -43,7 +47,7 @@ let initDateFormat = (start: string, end: string) => {
       return forMatDate(1, 30);
     }
   }
-  const yearArr = forMatDate(startYear, startYear + 30);
+  const yearArr = forMatDate(startYear, startYear + 60);
   const monArr = [1,2,3,4,5,6,7,8,9,11,12];
   const dayArr = getDate(startYear, startMon);
   return {yearArr: yearArr, monArr: monArr, dayArr: dayArr};
@@ -90,9 +94,11 @@ let initDateFormat = (start: string, end: string) => {
       }
       const data = obj.data;
       const { start, end } = data;
-      const dateObj = initDateFormat(start, end);
+      const dateObj = initDateFormat(start, end, obj.format);
       const defaultKey = obj.defaultKey;
-      this.setState({isValid: isValid, dateObj: dateObj, defaultKey: defaultKey}, () => {
+      const format = obj.format;
+      const unit = obj.unit;
+      this.setState({unit: unit, isValid: isValid, dateObj: dateObj, defaultKey: defaultKey, format: format, }, () => {
         /* valid infomation goes up */
         obj.isValid = isValid;
         // this.props.getValidate(isValid);
@@ -105,22 +111,34 @@ let initDateFormat = (start: string, end: string) => {
       this.setState({
       });
     }
-
+    // openDateSelect(e:any) {
+    //   this.setState({showSelectPad: true})
+    // }
+    // callback(value:any) {
+    //   this.setState({defaultKey: value});
+    // }
+    getDateValue(dateValue: string) {
+      obj.defaultKey = dateValue;
+    }
     render() {
       let dateObj = this.state.dateObj||{};
-      console.log(dateObj)
       return (
-        <WAPC
-          data={this.state.data}
-          yearArr={dateObj.yearArr}
-          monArr={dateObj.monArr}
-          dayArr={dateObj.dayArr}
-          validate={this.validate}
-          setValue={this.setValue}
-          isValid={this.state.isValid}
-          defaultKey={this.state.defaultKey}
-          chanYears={this.changeYears}
-        />
+
+              <WAPC
+                format={this.state.format}
+                data={this.state.data}
+                unit={this.state.unit}
+                yearArr={dateObj.yearArr}
+                monArr={dateObj.monArr}
+                dayArr={dateObj.dayArr}
+                validate={this.validate}
+                setValue={this.setValue}
+                isValid={this.state.isValid}
+                defaultKey={this.state.defaultKey}
+                chanYears={this.changeYears}
+                getDateValue={this.getDateValue.bind(this)}
+              />
+          
       );
     }
   };

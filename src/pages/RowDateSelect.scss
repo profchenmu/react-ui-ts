@@ -1,35 +1,72 @@
-.row-date-select{
+.row-date-select-out{
 	user-select: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(100, 100, 100, 0.3);
+	top: 0;
+	left: 0;
+	transition: all 1s;
+	opacity: 0;
+}
+.fade-in{
+	opacity: 1;
+}
+.fade-out{
+	opacity: 0;
+}
+.row-date-select{
+	.btn-holder{
+		display: inline-block;
+		width: 100%;
+		span{
+			width: 33.333333333%;
+			float: left;
+		}
+	}
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background: #fff;
+    padding-bottom: 30px;
 	.out-items{
-		height: 100px;
+		height: 150px;
 	    overflow: hidden;
 	    display: inline-block;
-	    padding-top: 40px;
-	    padding-bottom: 40px;
 	    box-sizing: border-box;
+	    width: 33.33333333%;
+	    p{
+	    	height: 30px;
+    		margin: 0;
+    		line-height: 30px;
+    		float: right;
+    		padding-right: 20%;
+	    }
 	}
 	.selects-holder{
 		position: relative;
 	}
 	.line-mark{
-		height: 1px;
 		width: 100%;
-		position: absolute;
-		top: 60px;
-		background: red;
+	    position: absolute;
+	    top: 60px;
+	    border-top: .5px solid #ccc;
+	    border-bottom: .5px solid #ccc;
+	    height: 30px;
+	    display: flex;
 	}
 	.date-item{
 		.select-item{
-			height: 20px;
-			line-height: 20px;
+			height: 30px;
+			line-height: 30px;
 		}
-		width: 100px;
-		text-align: center;
 		z-index: 2;
+    	display: inline-block;
+    	width: 100%;
+        margin-top: 60px;
+    	margin-bottom: 60px;
 	}
 }
 body{
-	position: fixed;
-	width: 100%;
-	height: 100%;
+	margin: 0;
 }

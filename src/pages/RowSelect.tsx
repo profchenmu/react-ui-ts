@@ -23,7 +23,6 @@ class RowInput extends React.Component<any, any> {
       defaultKey,
       data
     } = this.state;
-    console.log(defaultKey)
     return (
       <div>
         <div className="content">

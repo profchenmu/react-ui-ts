@@ -43,14 +43,16 @@ let obj = [
     name: 'd',
     type: 'dateSelect',
     data: {
-      start: '1980-1-1',
-      end: '3000-12-31',
+      start: '1-1-1980',
+      end: '31-12-3000',
       devideWith: '-'
     },
-    defaultKey: '1983-3-9',
+    defaultKey: '9-3-1983',
     validate: [],
     errorMsg: ['df1', 'df2'],
-    resErrorMsg:''
+    resErrorMsg:'',
+    format: 'dd-mm-yyyy',
+    unit: '日-月-年'
   }
 ];
 class PageIn extends React.Component<any, any> {
@@ -71,7 +73,6 @@ class PageIn extends React.Component<any, any> {
   componentDidMount() {
   }
   submitForm() {
-    console.log(obj)
     let resErrorMsg: string = ''
     for(let i of obj) {
       if(i.resErrorMsg) {
@@ -79,6 +80,7 @@ class PageIn extends React.Component<any, any> {
         break;
       }
     }
+    console.log(obj)
     this.setState({
       isShown: true,
       resErrorMsg: resErrorMsg

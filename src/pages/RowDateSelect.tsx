@@ -10,11 +10,14 @@ class RowInput extends React.Component<any, any> {
       data: this.props.data,
       defaultKey: this.props.defaultKey,
       name: this.props.name,
+      format: '',
       yearArr: [],
       monArr: [],
       dayArr: [],
       moveStyle: 0,
-      needTransition: true
+      needTransition: true,
+      showSelectPad: false,
+      fadeOut: ''
     };
     this.change = this.change.bind(this);
     this.blur = this.blur.bind(this);
@@ -83,7 +86,6 @@ class RowInput extends React.Component<any, any> {
     this.movePos = Math.abs(this.endPos - this.startPos);
     let speed:number = this.movePos/this.timeMove;
     this.speedDown(speed, this.endPos - this.startPos, e);
-    
   }
   speedDown(speed: number, isUp: number, e: any) {
     if(speed!==0) {
@@ -129,9 +131,10 @@ class RowInput extends React.Component<any, any> {
   callback(valueObj: any) {
     let defaultKey = this.state.defaultKey;
     let _tempArr = defaultKey.split('-');
-    let defaultYear = parseInt(_tempArr[0]);
-    let defaultMon = parseInt(_tempArr[1]);
-    let defaultDay = parseInt(_tempArr[2]);
+    let _format = this.state.format?this.state.format.split('-'):[];
+    let defaultYear = parseInt(_tempArr[_format.indexOf('yyyy')]);
+    let defaultMon = parseInt(_tempArr[_format.indexOf('mm')]);
+    let defaultDay = parseInt(_tempArr[_format.indexOf('dd')]);
     switch (valueObj.name) {
       case 'year':
         defaultYear = valueObj.value;
@@ -161,7 +164,11 @@ class RowInput extends React.Component<any, any> {
         defaultDay > 30 && (defaultDay = 30);
       }
     }
-    defaultKey = `${defaultYear}-${defaultMon}-${defaultDay}`;
+    let formatStr = this.state.format;
+    defaultKey = formatStr
+      .replace('yyyy', defaultYear)
+       .replace('mm', defaultMon)
+      .replace('dd', defaultDay);
     const _obj:any = {defaultKey: defaultKey}
     this.state.dayArr.length !== dayArr.length && (_obj.dayArr = dayArr);
     this.setState(_obj);
@@ -169,29 +176,110 @@ class RowInput extends React.Component<any, any> {
   setMon(value: object) {
     console.log(value);
   }
+  openDateSelect(e:any) {
+    let self = this;
+    this.setState({showSelectPad: true},()=>{
+      setTimeout(()=>{
+        self.setState({fadeOut: ' fade-in'})
+      },0);
+    })
+  }
+  confirmDate() {
+    this.setState({
+      defaultKey: this.state.defaultKey,
+      showSelectPad: false,
+      fadeOut: ''
+    })
+    this.props.getDateValue(this.state.defaultKey);
+  }
+  cancel() {
+    this.setState({
+      showSelectPad: false,
+      fadeOut: ''
+    })
+  }
   render() {
     const {
       // placeholder,
       // value,
-      yearArr, monArr, dayArr, defaultKey
+      yearArr, monArr, dayArr, defaultKey, 
+      format, unit
     } = this.state;
     let _tempArr = defaultKey.split('-');
-    let defaultYear = _tempArr[0];
-    let defaultMon = _tempArr[1];
-    let defaultDay = _tempArr[2];
+    let _format = format?format.split('-'):[];
+    let _unit = unit?unit.split('-'):[];
+    let defaultYear = _tempArr[_format.indexOf('yyyy')];
+    let defaultMon = _tempArr[_format.indexOf('mm')];
+    let defaultDay = _tempArr[_format.indexOf('dd')];
+    let unitYear = _unit[_format.indexOf('yyyy')];
+    let unitMon = _unit[_format.indexOf('mm')];
+    let unitDay = _unit[_format.indexOf('dd')];
     return (
-      <div className="row-date-select">
-      <p>{defaultKey}</p>
-        <div>
-        <p>{`${this.props.isValid}`}</p>
-          <div className="selects-holder">
-            <div className="line-mark"></div>
-            <ChainSelect name='year' yearArr={yearArr} callback={this.callback.bind(this)} defaultYear={defaultYear} />
-            <ChainSelect name='mon' yearArr={monArr} callback={this.callback.bind(this)} defaultYear={defaultMon} />
-            <ChainSelect name='day' yearArr={dayArr} callback={this.callback.bind(this)} defaultYear={defaultDay} />
-          </div>
-        </div>
+      <div>
+      <div onClick={this.openDateSelect.bind(this)}>
+        {defaultKey} 
       </div>
+      {
+        this.state.showSelectPad? 
+        (<div className={`row-date-select-out${this.state.fadeOut}`}>
+          <div className="row-date-select">
+          <p className="btn-holder">
+            <span onClick={this.cancel.bind(this)}>Cancel</span>
+            <span>{defaultKey}</span>
+            <span onClick={this.confirmDate.bind(this)}>Submit</span>
+          </p>
+              <div>
+              {/*<p>{`${this.props.isValid}`}</p>*/}
+                <div className="selects-holder">
+                  <div className="line-mark"></div>
+                  {_format.map((e:any, i:number)=>{
+                    switch (e) {
+                      case "yyyy":
+                        return(
+                          <ChainSelect 
+                            key={i} 
+                            name='year' 
+                            itemHeight='30'
+                            unit={unitYear}
+                            yearArr={yearArr} 
+                            callback={this.callback.bind(this)} 
+                            defaultYear={defaultYear} 
+                          />
+                        )
+                      case "mm":
+                        return(
+                          <ChainSelect 
+                            key={i} 
+                            name='mon' 
+                            itemHeight='30'
+                            unit={unitMon}
+                            yearArr={monArr} 
+                            callback={this.callback.bind(this)} 
+                            defaultYear={defaultMon} 
+                          />
+                        )  
+                      case "dd":
+                        return(
+                          <ChainSelect 
+                            key={i} 
+                            name='day'
+                            unit={unitDay}
+                            itemHeight='30' 
+                            yearArr={dayArr} 
+                            callback={this.callback.bind(this)} 
+                            defaultYear={defaultDay} 
+                          />
+                        )
+                      default:
+                        return null;
+                    }
+                  })}            
+                </div>
+              </div>
+            </div>
+          </div>):null
+        }
+      </div> 
     );
   }
   blur(e: any) {

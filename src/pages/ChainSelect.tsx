@@ -5,13 +5,21 @@ import './RowDateSelect.scss';
 class RowInput extends React.Component<any, any> {
   constructor(props: object) {
     super(props);
+    let defaultYear = this.props.defaultYear;
+    defaultYear = parseInt(defaultYear);
+    let index:number = this.props.yearArr.indexOf(defaultYear);
+    let moveStyle = 0-index*this.props.itemHeight;
+    this.itemHeight = parseInt(this.props.itemHeight);
+    // this.setState({
+    //   ...props,
+    //   moveStyle: moveStyle
+    // });
     this.state = {
       defaultKey: this.props.defaultKey,
       name: this.props.name,
-      yearArr: [],
-      moveStyle: 0,
-      needTransition: true,
-      defaultYear: this.props.defaultYear
+      yearArr: this.props.yearArr,
+      moveStyle: moveStyle,
+      needTransition: true
     };
     this.change = this.change.bind(this);
     this.blur = this.blur.bind(this);
@@ -23,22 +31,26 @@ class RowInput extends React.Component<any, any> {
   endPos: number
   movePos: number
   timeout: any
+  itemHeight: number
   componentWillReceiveProps(props:any) {
-    let defaultYear = props.defaultYear;
-    defaultYear = parseInt(defaultYear);
-    let index:number = props.yearArr.indexOf(defaultYear);
-    let moveStyle = 0-index*20;
-    this.setState({
-      ...props,
-      moveStyle: moveStyle
-    });
+    // let defaultYear = props.defaultYear;
+    // defaultYear = parseInt(defaultYear);
+    // let index:number = props.yearArr.indexOf(defaultYear);
+    // let moveStyle = 0-index*props.itemHeight;
+    // this.setState({
+    //   moveStyle: moveStyle
+    // })
+    if(this.state.yearArr.length!==props.yearArr.length) {
+      this.stop()
+    }
+    
   }
   componentDidMount() {
-
+    
   }
 
   componentDidUpdate() {
-    
+
     // let moveStyle:number = Math.round(this.state.moveStyle/20)*20;
     // console.dir(this.refs.yearItems);
     // let caoItem:any = this.refs.yearItems;
@@ -97,44 +109,59 @@ class RowInput extends React.Component<any, any> {
       let _speed = speed;
       if(isUp<0){
         let moveStyle = this.state.moveStyle-_speed;
-        console.log(moveStyle);
         this.setState({
           moveStyle: moveStyle,
           needTransition: true
         })
       }
     }
-    this.stop();
-    this.jumpBack(e);
+    let height = 0 - e.currentTarget.clientHeight + this.itemHeight;
+    if(this.state.moveStyle > 0||this.state.moveStyle < height) {
+      this.jumpBack.bind(this)(e);
+    }else{
+      this.stop();
+    }
   }
   cao() {
-    let moveStyle:number = Math.round(this.state.moveStyle/20)*20;
-    // let absMoveStyle:number = Math.abs(moveStyle % 20);
-    // if( absMoveStyle > 10) {
-    //   moveStyle += absMoveStyle;
-    // } else {
-    //   moveStyle -= absMoveStyle;
-    // }
-    let yearValue = Math.abs(moveStyle/20);
-    this.props.callback({name: this.props.name, value: this.state.yearArr[yearValue]});
+    let moveStyle:number = Math.round(this.state.moveStyle/this.itemHeight)*this.itemHeight;
+    let yearValue = Math.abs(moveStyle/this.itemHeight);
+    if(yearValue<0){
+      yearValue = 0;
+      moveStyle = 0;
+    }
+    if(yearValue>this.props.yearArr.length-1){
+      yearValue = this.props.yearArr.length-1
+      moveStyle = (1-this.props.yearArr.length)*this.itemHeight
+    }
+    this.props.callback({name: this.props.name, value: this.props.yearArr[yearValue]});
     this.setState({
       moveStyle: moveStyle
     });
   }
   stop() {
     let self = this;
-    this.timeout = setTimeout(self.cao.bind(self), 500);
+    this.timeout = setTimeout(self.cao.bind(self), 300);
   }
   jumpBack(e:any) {
     // let parentEl:any = this.refs.yearItems;
-    let height = 0 - e.currentTarget.clientHeight + 20;
-    this.state.moveStyle > 0 && this.setState({moveStyle: 0, needTransition: true});
-    this.state.moveStyle < height && this.setState({moveStyle: height, needTransition: true});
+    let height = 0 - e.currentTarget.clientHeight + this.itemHeight;
+    let moveStyle: number = this.state.moveStyle, 
+        yearValue: number = 0;
+    if(this.state.moveStyle > 0) {
+      moveStyle = 0;
+      yearValue = 0;
+    }
+    if(this.state.moveStyle < height) {
+      moveStyle = height;
+      yearValue = this.state.yearArr.length - 1;
+    }
+    this.setState({moveStyle: moveStyle, needTransition: true});
+    this.props.callback({name: this.props.name, value: this.props.yearArr[yearValue]});
   }
   componentWillUpdate(props:any,state:any) {
     let cao:any = this.refs.cao;
     if(state.needTransition) {
-      cao.style.transition = 'all .4s ease-out';
+      cao.style.transition = 'all .2s ease-out';
     }else{
       cao.style.transition = '';
     }
@@ -142,12 +169,17 @@ class RowInput extends React.Component<any, any> {
   render() {
     const {
       yearArr
-    } = this.state;
+    } = this.props;
     let cao = {
       transform: `translate3d(0, ${this.state.moveStyle}px, 0)`
     }
     return (
-          <div className="out-items" ref="yearItems">
+          <div 
+            className="out-items" 
+            ref="yearItems"
+            // onTouchEnd={this.jumpBack.bind(this)}
+          >
+
             <div 
               className="date-item year-item"
               ref="cao"
@@ -159,8 +191,8 @@ class RowInput extends React.Component<any, any> {
               {
                 yearArr.map((e:any,i:number) => {
                   return (
-                    <div className="select-item" key={i}>
-                      {e}
+                    <div className="select-item" key={i} ref="selectItem">
+                      {e + this.props.unit}
                     </div>
                   )
                 })
@@ -175,7 +207,7 @@ class RowInput extends React.Component<any, any> {
   change(e: any) {
     let value = e.target.value;
     console.log(value)
-    this.setState({defaultKey: value});
+    // this.setState({defaultKey: value});
     this.validate(value);
     this.setValue(value)
   }
