@@ -2,6 +2,7 @@ import * as React from 'react';
 import './RowDateSelect.scss';
 // import PropTypes from 'prop-types';
 import ChainSelect from './ChainSelect';
+import './RowSignature.scss';
 
 class RowInput extends React.Component<any, any> {
   constructor(props: object) {
@@ -17,7 +18,8 @@ class RowInput extends React.Component<any, any> {
       moveStyle: 0,
       needTransition: true,
       showSelectPad: false,
-      fadeOut: ''
+      fadeOut: ' fade-out',
+      slideUp: ' slide-down'
     };
     this.change = this.change.bind(this);
     this.blur = this.blur.bind(this);
@@ -180,23 +182,36 @@ class RowInput extends React.Component<any, any> {
     let self = this;
     this.setState({showSelectPad: true},()=>{
       setTimeout(()=>{
-        self.setState({fadeOut: ' fade-in'})
+        self.setState({fadeOut: ' fade-in', slideUp: ' slide-up'})
       },0);
     })
   }
   confirmDate() {
     this.setState({
-      defaultKey: this.state.defaultKey,
-      showSelectPad: false,
-      fadeOut: ''
-    })
+      fadeOut: ' fade-out',
+      slideUp: ' slide-down'
+    }, ()=>{
+      setTimeout(()=>{
+        this.setState({
+          defaultKey: this.state.defaultKey,
+          showSelectPad: false
+        })
+      },1000)
+    });
     this.props.getDateValue(this.state.defaultKey);
   }
   cancel() {
     this.setState({
-      showSelectPad: false,
-      fadeOut: ''
-    })
+      fadeOut: ' fade-out',
+      slideUp: ' slide-down'
+    }, ()=>{
+      setTimeout(()=>{
+        this.setState({
+          
+          showSelectPad: false
+        })
+      },1000)
+    });
   }
   render() {
     const {
@@ -222,7 +237,7 @@ class RowInput extends React.Component<any, any> {
       {
         this.state.showSelectPad? 
         (<div className={`row-date-select-out${this.state.fadeOut}`}>
-          <div className="row-date-select">
+          <div className={`row-date-select${this.state.slideUp}`}>
           <p className="btn-holder">
             <span onClick={this.cancel.bind(this)}>Cancel</span>
             <span>{defaultKey}</span>

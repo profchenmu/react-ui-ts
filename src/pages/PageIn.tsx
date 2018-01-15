@@ -53,6 +53,15 @@ let obj = [
     resErrorMsg:'',
     format: 'dd-mm-yyyy',
     unit: '日-月-年'
+  },
+  {
+    name: 'e',
+    type: 'signature',
+    data: '',
+    defaultKey: '',
+    validate: [],
+    errorMsg: [],
+    resErrorMsg:''
   }
 ];
 class PageIn extends React.Component<any, any> {

@@ -6,15 +6,16 @@
 	background-color: rgba(100, 100, 100, 0.3);
 	top: 0;
 	left: 0;
-	transition: all 1s;
+	transition: all .5s;
 	opacity: 0;
+	&.fade-in{
+		opacity: 1;
+	}
+	&.fade-out{
+		opacity: 0;
+	}
 }
-.fade-in{
-	opacity: 1;
-}
-.fade-out{
-	opacity: 0;
-}
+
 .row-date-select{
 	.btn-holder{
 		display: inline-block;
@@ -24,9 +25,16 @@
 			float: left;
 		}
 	}
+	&.slide-up{
+		bottom: 0;
+	}
+	&.slide-down{
+		bottom: -750px;
+	}
+	transition: all .5s;
     position: absolute;
     width: 100%;
-    bottom: 0;
+    bottom: -750px;
     background: #fff;
     padding-bottom: 30px;
 	.out-items{

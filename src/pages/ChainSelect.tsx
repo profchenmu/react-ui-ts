@@ -81,16 +81,16 @@ class RowInput extends React.Component<any, any> {
   }
   yearTouchMove(e:any) {
     e.preventDefault();
+    clearTimeout(this.timeout);
     // let parentEl:any = this.refs.yearItems;
     // let height = 0 - e.currentTarget.clientHeight + parentEl.clientHeight - 50;
     let pos:number = e.touches[0].clientY;
     let movePos = pos - this.startPos;
     this.timeStart = e.timeStamp;
-    this.setState({moveStyle: movePos})
+    this.setState({moveStyle: movePos});
   }
   yearTouchStart(e:any) {
     // this.timeStart = e.timeStamp;
-    clearTimeout(this.timeout);
     this.startPos = e.touches[0].clientY - this.state.moveStyle;
     this.setState({
       needTransition: true

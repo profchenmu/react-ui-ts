@@ -8,6 +8,8 @@ import RSHProps from './RowSelectHight';
 
 import RowDateSelect from './RowDateSelect';
 import RDSHProps from './RowDateSelectHight';
+import RowSignature from './RowSignature';
+import RHSignature from './RowSignatureHight';
 
 export default function PageCao(obj: object) {
   function getValues(isValid: boolean):void {
@@ -65,6 +67,19 @@ export default function PageCao(obj: object) {
                   return(
                     <div key={i}>
                       <RDSH
+                        data={e.data} 
+                        validate={e.validate}
+                        name={e.name}
+                        defaultKey={e.defaultKey}
+                        getValidate={this.getValidate}
+                      />
+                    </div>
+                  );
+                case 'signature':
+                  const RSNH = RHSignature(RowSignature, e);
+                  return(
+                    <div key={i}>
+                      <RSNH
                         data={e.data} 
                         validate={e.validate}
                         name={e.name}
