@@ -10,8 +10,10 @@ class RowButton extends React.Component<any, any> {
   }
   render() {
     return (
-      <div className="row-button">
-        {this.props.text}
+      <div className={`row-button ${this.props.type}`}>
+        <p>
+          {this.props.text}
+        </p>
       </div>
     );
   }

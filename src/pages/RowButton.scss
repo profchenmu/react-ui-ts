@@ -1,4 +1,18 @@
+@import './main.scss';
 .row-button{
-	width: 30%;
-	background: gray;
+	width: 44%;
+	&.cancel{
+		background: $gray;
+		color: #fff;
+	}
+	&.submit{
+		background: $blue;
+		color: #fff;
+		background: radial-gradient(60% 55%, farthest-corner,blue,green,yellow,black);
+	}
+	p{
+		height: 40px;
+		line-height: 40px;
+		margin: 0;
+	}
 }
