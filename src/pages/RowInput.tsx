@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './RowInput.scss';
 // import PropTypes from 'prop-types';
 
 class RowInput extends React.Component<any, any> {
@@ -14,22 +15,25 @@ class RowInput extends React.Component<any, any> {
     const {
       type,
       name,
-      placeholder,
       value
     } = this.state;
     return (
-      <div>
-        <div className="content">
-        <p>{`${this.props.isValid}`}</p>
-          <div>
+      <div className="row-input">
+        <div className="input-content">
+        {/*<p>{`${this.props.isValid}`}</p>*/}
+          <div className="row-holder">
+            <label>{this.props.title}</label>
             <input
               type={type ? type : 'text'}
-              placeholder={placeholder}
+              placeholder={this.props.placeHolder}
               name={name}
               onChange={this.change}
               value={value}
               onBlur={this.blur}
             />
+            <div className="bottom-line"></div>
+            {this.props.resErrorMsg?(<div className="red-line"></div>):null}
+            <small>{this.props.resErrorMsg}</small>
           </div>
         </div>
       </div>

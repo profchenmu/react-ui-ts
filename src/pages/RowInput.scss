@@ -1,0 +1,58 @@
+$blue: rgb(33, 150, 243);
+$black: #666;
+.row-input{
+	width: 100%;
+	.input-content{
+		display: relative;
+		min-height: 60px;
+		padding-bottom: 5px;
+		.row-holder{
+			display: flex;
+			width: 100%;
+			border-bottom: .5px solid #ccc;
+			position: relative;
+			label{
+				flex: 1;
+				text-align: left;
+				color: $blue;
+			}
+			input{
+				flex: 2;
+				text-align: right;
+				color: $black;
+			}
+			.bottom-line{
+				height: 1px;
+				border-bottom: 1px solid $blue;
+				position: absolute;
+				bottom: 0;
+				width: 0%;
+				left: 50%;
+				transition: all .5s ease-in;
+			}
+			input[type="text"]:focus + .bottom-line{
+				width: 100%;
+				left: 0%;
+			}
+			.red-line{
+				border-bottom: 1px solid red;
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				z-index: 2;
+				left: 0;
+			}
+			small{
+				position: absolute;
+				bottom: -24px;
+				right: 15px;
+				line-height: 20px;
+				height: 20px;
+				display: block;
+				color: red;
+				font-weight: bold;
+			}
+		}
+	}
+}

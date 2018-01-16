@@ -8,9 +8,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <p className="App-intro">
-          To get started, edit and save to reload.
-        </p>
+        <h2 className="App-intro">
+          DEMO-TS-REACT
+        </h2>
         <BrowserRouter>
           <Route path="/page1" component={Cao} />
         </BrowserRouter>

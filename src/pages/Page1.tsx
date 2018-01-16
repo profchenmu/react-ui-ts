@@ -34,7 +34,7 @@ export default function PageCao(obj: object) {
     render() {
       const inputInfoObj = this.state.inputInfoObj;
       return (
-        <div>
+        <div className="page-in">
           {
             inputInfoObj.map((e: any, i: number) => {
               switch (e.type) {
@@ -44,7 +44,8 @@ export default function PageCao(obj: object) {
                     <div key={i}>
                       <RIH 
                         data={e.data} 
-                        validate={e.validate} 
+                        validate={e.validate}
+                        placeHolder={e.placeHolder}
                         getValidate={this.getValidate}
                       />
                     </div>

@@ -1,0 +1,13 @@
+.row-button-group{
+	width: 100%;
+	height: 50px;
+	.button-group-content{
+		justify-content: space-between;
+		height: 100%;
+		position: relative;
+		display: flex;
+		width: 80%;
+		margin-left: -40%;
+		left: 50%;
+	}
+}
