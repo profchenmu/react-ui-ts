@@ -11,7 +11,6 @@ class SimpleModal extends React.Component<any, any> {
   componentDidMount() {
   }
   componentWillReceiveProps(props: object) {
-    console.log(props);
     this.setState(props);
   }
   // hideModal() {

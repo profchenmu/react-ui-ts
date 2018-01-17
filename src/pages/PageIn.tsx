@@ -99,7 +99,7 @@ class PageIn extends React.Component<any, any> {
       }
     }
     this.setState({
-      isShown: true,
+      isShown: (resErrorMsg.length>0),
       resErrorMsg: resErrorMsg
     })
   }
