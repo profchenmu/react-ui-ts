@@ -80,6 +80,9 @@ class PageIn extends React.Component<any, any> {
     this.getValue = this.getValue.bind(this);
     this.getValidate = this.getValidate.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.cancel = this.cancel.bind(this);
+  }
+  cancel() {
   }
   getValue(value: string) {
   }
@@ -95,7 +98,6 @@ class PageIn extends React.Component<any, any> {
         break;
       }
     }
-    console.log(obj)
     this.setState({
       isShown: true,
       resErrorMsg: resErrorMsg
@@ -103,12 +105,13 @@ class PageIn extends React.Component<any, any> {
   }
   render() {
     const CaoPage: any = this.state.CaoPage;
+    console.log(this.state.isShown);
     return (
       <div>
         <CaoPage />
-        <div onClick={this.submitForm}>submit</div>
         <RowButtonGroup 
-
+          submit={this.submitForm}
+          cancel={this.cancel}
         />
         <SimpleModal 
           isShown={this.state.isShown}

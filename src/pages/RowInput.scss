@@ -19,6 +19,7 @@
 				flex: 2;
 				text-align: right;
 				color: $black;
+				user-select: auto;
 			}
 			.bottom-line{
 				height: 1px;
@@ -26,12 +27,11 @@
 				position: absolute;
 				bottom: 0;
 				width: 0%;
-				left: 50%;
+				left: 0;
 				transition: all .5s ease-in;
 			}
 			input[type="text"]:focus + .bottom-line{
 				width: 100%;
-				left: 0%;
 			}
 			.red-line{
 				border-bottom: 1px solid red;
