@@ -12,6 +12,8 @@ class RowInput extends React.Component<any, any> {
     this.blur = this.blur.bind(this);
   }
   render() {
+    console.log(this);
+
     const {
       type,
       name,
@@ -49,7 +51,7 @@ class RowInput extends React.Component<any, any> {
     this.setValue(value)
   }
   validate(value: string) {
-    this.props.validate && this.props.validate(value);
+    this.props.validate && this.props.validate(value, true);
   }
   setValue(value: string) {
     this.props.setValue(value);

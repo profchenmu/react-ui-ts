@@ -6,7 +6,8 @@ export default function logProps(WAPC: any, obj: {
   errorMsg: Array<string>, 
   title: string,
   placeHolder: string,
-  resErrorMsg: string
+  resErrorMsg: string,
+  needValidate: boolean
 }) {
 
   return class extends React.Component<any, any> {
@@ -20,11 +21,14 @@ export default function logProps(WAPC: any, obj: {
       }
     }
     componentDidMount() {
-      this.validate(this.props.data);
+      this.validate(this.props.data, obj.needValidate);
+    }
+    componentWillReceiveProps() {
+      // this.validate(this.props.data);
     }
     // componentWillUnmount() {
     // }
-    validate(value: string):void {
+    validate(value: string, needValidate: boolean):void {
       const validateFun = this.props.validate;
       let isValid = true;
       if (validateFun instanceof Array) {
@@ -40,15 +44,15 @@ export default function logProps(WAPC: any, obj: {
       }
       if(isValid){
         obj.resErrorMsg = '';
-      }
-      this.setState({
-        isValid: isValid,
-        resErrorMsg: obj.resErrorMsg
-      }, () => {
-        /* valid infomation goes up */
         obj.isValid = isValid;
-        // this.props.getValidate(isValid);
-      });
+      }
+      if(needValidate) {
+        this.setState({
+          isValid: isValid,
+          resErrorMsg: obj.resErrorMsg
+        });
+      }
+      
     }
     setValue(value: string):void {
       obj.data = value;

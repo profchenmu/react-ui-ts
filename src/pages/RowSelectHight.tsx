@@ -2,7 +2,7 @@ import * as React from 'react';
 // import RowInput from './RowInput';
 export default function logProps(WAPC: any, obj: {
   isValid: boolean, 
-  data: string, 
+  data: any, 
   errorMsg: Array<string>, 
   resErrorMsg: string,
   defaultValue: string

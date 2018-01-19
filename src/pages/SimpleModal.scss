@@ -6,4 +6,30 @@
 	z-index: 333;
 	top: 0;
 	left: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: .5s all;
+	.simple-modal-container{
+		position: relative;
+		width: 70%;
+		box-shadow: #888 0px 0px 30px;
+		margin-left: -35%;
+		left: 50%;
+		background: #fff;
+		top: 0%;
+		padding: 10% 0;
+		border-radius: 5px;
+		transition: .5s all ease-in;
+		transition-delay: .3s;
+		opacity: 0;
+	}
+	&.active{
+		opacity: 1;
+		visibility: visible;
+		.simple-modal-container{
+			top: 30%;
+			opacity: 1;
+		}
+	}
 }
+

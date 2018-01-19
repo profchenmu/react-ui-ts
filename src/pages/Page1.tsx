@@ -55,10 +55,10 @@ export default function PageCao(obj: object) {
                   return(
                     <div key={i}>
                       <RSH
-                        data={e.data} 
+                        data={e.items} 
                         validate={e.validate}
                         name={e.name}
-                        defaultKey={e.defaultKey}
+                        defaultKey={e.data}
                         getValidate={this.getValidate}
                       />
                     </div>
