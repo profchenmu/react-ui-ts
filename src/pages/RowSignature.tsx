@@ -34,6 +34,8 @@ class RowSignature extends React.Component<any, any> {
   reset(){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
+    this.canvas2.width=0;
+    this.canvas2.height=0;
   }
   drawEnd(e:any) {
     this.minX < 0 && (this.minX = 0);
@@ -119,7 +121,7 @@ class RowSignature extends React.Component<any, any> {
           onTouchMove={this.drawing}
           onTouchEnd={this.drawEnd}
         />
-        <canvas ref="canvas2" />
+        <canvas ref="canvas2" height="0" width="0" />
         <button onClick={this.reset}>reset</button>
         {/*<img src={require('./xxx.jpg')} width="200" height="200" id="source" />*/}
       </div>
