@@ -17,15 +17,6 @@ class RowSignature extends React.Component<any, any> {
   minX:number
   minY:number
   componentDidMount() {
-    // let signature:any = document.getElementById('signature');
-    // let cao:any = document.getElementById('cao');
-    // console.dir(signature);
-    // let ctn:any = signature.getContext('2d');
-    // console.log(ctn);
-    // let img:any = new Image();
-    // img.src = require('./xxx.jpg');
-    // ctn.drawImage(cao);
-    // console.dir(cao);
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
     this.y = this.canvas.offsetTop;
@@ -35,10 +26,8 @@ class RowSignature extends React.Component<any, any> {
     this.minY = this.canvas.clientHeight;
   }
   drawEnd(e:any) {
-    // console.log(this.minX, this.minY, this.maxX, this.maxY);
     this.minX < 0 && (this.minX = 0);
     this.minY < 0 && (this.minY = 0);
-    // console.log(this.maxY,this.canvas.clientHeight)
     this.maxX > this.canvas.clientWidth && (this.maxX = this.canvas.clientWidth);
     this.maxY > this.canvas.clientHeight && (this.maxY = this.canvas.clientHeight);
     let file = this.canvas.toDataURL('base64');
