@@ -7,9 +7,12 @@ class RowSignature extends React.Component<any, any> {
     this.drawStart = this.drawStart.bind(this);
     this.drawing = this.drawing.bind(this);
     this.drawEnd = this.drawEnd.bind(this);
+    this.reset = this.reset.bind(this);
   }
   canvas:any
   ctx:any
+  canvas2:any
+  ctx2:any
   x:number
   y:number
   maxX:number
@@ -18,12 +21,19 @@ class RowSignature extends React.Component<any, any> {
   minY:number
   componentDidMount() {
     this.canvas = document.getElementById('canvas');
+    this.canvas2 = this.refs.canvas2;
+    // this.canvas2 = document.getElementById('canvas2');
     this.ctx = this.canvas.getContext('2d');
+    this.ctx2 = this.canvas2.getContext('2d');
     this.y = this.canvas.offsetTop;
     this.x = this.canvas.offsetLeft;
     this.maxX = this.maxY = 0;
     this.minX = this.canvas.clientWidth;
     this.minY = this.canvas.clientHeight;
+  }
+  reset(){
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
   }
   drawEnd(e:any) {
     this.minX < 0 && (this.minX = 0);
@@ -110,6 +120,7 @@ class RowSignature extends React.Component<any, any> {
           onTouchEnd={this.drawEnd}
         />
         <canvas ref="canvas2" />
+        <button onClick={this.reset}>reset</button>
         {/*<img src={require('./xxx.jpg')} width="200" height="200" id="source" />*/}
       </div>
     );
